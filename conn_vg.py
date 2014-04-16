@@ -139,7 +139,7 @@ declare root
 if __name__ == "__main__":
 	print '\nBegin VPN configuration, please wait ...'
 	print '\ncreating vpn instance ...'
-	a = MyVPN(sys.argv[1], sys.argv[2])
+	a = MyVPN(sys.argv[1], sys.argv[2], sys.argv[3])
 	
 	print '\nreconfig account settings and connect ...'
 	a.connect_vpn()
