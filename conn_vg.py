@@ -8,7 +8,7 @@ class MyVPN():
 	def __init__(self, ip, port, enable):
 		self.ip = ip
 		self.port = port
-		self.enable = enable
+		self.enable = int(enable)
 		self.conf_file_name = 'vgp.vpn'
 		self.conf_name = 'vgp1'
 		self.vpn_adapter = 'vpn_vg'

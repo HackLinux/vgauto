@@ -148,6 +148,9 @@ declare root
 			print '\nrestoring default route settings ...'
 			restore_default_route()
 			print '\ndefault route settings set successfully!'
+		else:
+			print '\nUnknown error!!!'
+			exit(0)
 
 
 
