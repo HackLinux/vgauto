@@ -136,17 +136,17 @@ declare root
 	def vg_switch(self):
 		if self.enable == 1:
 			print '\nreconfig account settings and connect ...'
-			a.connect_vpn()
+			self.connect_vpn()
 			time.sleep(3)	
-			a.status_get()
+			self.status_get()
 			print '\ndhclient refreshing ...'
-			a.dhclient_refresh()
+			self.dhclient_refresh()
 			print '\nchanging route ...'
-			a.change_route()
+			self.change_route()
 			print '\nnow you can enjoy the vpn connection!'
 		elif self.enable == 0:
 			print '\nrestoring default route settings ...'
-			restore_default_route()
+			self.restore_default_route()
 			print '\ndefault route settings set successfully!'
 		else:
 			print '\nUnknown error!!!'
