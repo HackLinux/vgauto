@@ -144,10 +144,13 @@ declare root
 			print '\nchanging route ...'
 			a.change_route()
 			print '\nnow you can enjoy the vpn connection!'
-		else self.enable == 0:
+		elif self.enable == 0:
 			print '\nrestoring default route settings ...'
 			restore_default_route()
 			print '\ndefault route settings set successfully!'
+		else:
+			print '\nUnknown error!!!'
+			exit(0)
 
 
 
