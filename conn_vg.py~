@@ -120,15 +120,12 @@ declare root
 	def dhclient_refresh(self):
 		subprocess.call(['dhclient', '-r', self.vpn_adapter])
 		subprocess.call(['dhclient', self.vpn_adapter])
-		#subprocess.call(['ifconfig'])
+		subprocess.call(['ifconfig'])
 
 
 	def change_route(self):
-		if self.enable == 1:
-			subprocess.call(['ip', 'route', 'add', self.ip, 'via', '192.168.0.1', 'dev', 'eth0'])
-			subprocess.call(['ip', 'route', 'change', 'default', 'via', '10.211.254.254', 'dev', self.vpn_adapter])
-		else self.enable == 0:
-			restore_default_route()
+		subprocess.call(['ip', 'route', 'add', self.ip, 'via', '192.168.0.1', 'dev', 'eth0'])
+		subprocess.call(['ip', 'route', 'change', 'default', 'via', '10.211.254.254', 'dev', self.vpn_adapter])
 
 	
 	def restore_default_route(self):
@@ -136,17 +133,26 @@ declare root
 		subprocess.call(['ip', 'route', 'change', 'default', 'via', '192.168.0.1', 'dev', 'eth0'])
 
 
+	def vg_switch(self):
+		if self.enable == 1:
+			print '\nreconfig account settings and connect ...'
+			a.connect_vpn()
+			time.sleep(3)	
+			a.status_get()
+			print '\ndhclient refreshing ...'
+			a.dhclient_refresh()
+			print '\nchanging route ...'
+			a.change_route()
+			print '\nnow you can enjoy the vpn connection!'
+		else self.enable == 0:
+			print '\nrestoring default route settings ...'
+			restore_default_route()
+			print '\ndefault route settings set successfully!'
+
+
+
 if __name__ == "__main__":
 	print '\nBegin VPN configuration, please wait ...'
 	print '\ncreating vpn instance ...'
-	a = MyVPN(sys.argv[1], sys.argv[2])
-	
-	print '\nreconfig account settings and connect ...'
-	a.connect_vpn()
-	time.sleep(3)	
-	a.status_get()
-	print '\ndhclient refreshing ...'
-	a.dhclient_refresh()
-	print '\nchanging route ...'
-	a.change_route()
-	print '\nnow you can enjoy the vpn connection!'
+	a = MyVPN(sys.argv[1], sys.argv[2], sys.argv[3])
+	a.vg_switch()
