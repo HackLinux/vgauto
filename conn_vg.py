@@ -88,6 +88,7 @@ declare root
 		p.stdin.write(self.conf_file_name)
 		p.stdin.write('\n')
 		p.stdin.write('accountconnect %s\n'%self.conf_name)
+		p.stdin.write('keepenable\n')
 		p.stdin.write('accountstatusget %s\n'%self.conf_name)
 
 		# run commands and exit
