@@ -5,9 +5,10 @@ import time
 
 
 class MyVPN():
-	def __init__(self, ip, port):
+	def __init__(self, ip, port, enable):
 		self.ip = ip
 		self.port = port
+		self.enable = enable
 		self.conf_file_name = 'vgp.vpn'
 		self.conf_name = 'vgp1'
 		self.vpn_adapter = 'vpn_vg'
@@ -123,8 +124,11 @@ declare root
 
 
 	def change_route(self):
-		subprocess.call(['ip', 'route', 'add', self.ip, 'via', '192.168.0.1', 'dev', 'eth0'])
-		subprocess.call(['ip', 'route', 'change', 'default', 'via', '10.211.254.254', 'dev', self.vpn_adapter])
+		if self.enable == 1:
+			subprocess.call(['ip', 'route', 'add', self.ip, 'via', '192.168.0.1', 'dev', 'eth0'])
+			subprocess.call(['ip', 'route', 'change', 'default', 'via', '10.211.254.254', 'dev', self.vpn_adapter])
+		else self.enable == 0:
+			restore_default_route()
 
 	
 	def restore_default_route(self):
@@ -146,11 +150,3 @@ if __name__ == "__main__":
 	print '\nchanging route ...'
 	a.change_route()
 	print '\nnow you can enjoy the vpn connection!'
-
-	'''
-	# restore default route settings
-
-	print '\nrestoring default route settings ...'
-	a.restore_default_route()
-	print '\ndefault route restored!'
-	'''
