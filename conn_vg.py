@@ -135,7 +135,7 @@ if __name__ == "__main__":
 	print '\nBegin VPN configuration, please wait ...'
 	print '\ncreating vpn instance ...'
 	a = MyVPN(sys.argv[1], sys.argv[2])
-	'''
+	
 	print '\nreconfig account settings and connect ...'
 	a.connect_vpn()
 	time.sleep(3)	
@@ -145,7 +145,11 @@ if __name__ == "__main__":
 	print '\nchanging route ...'
 	a.change_route()
 	print '\nnow you can enjoy the vpn connection!'
+
 	'''
+	# restore default route settings
+
 	print '\nrestoring default route settings ...'
 	a.restore_default_route()
 	print '\ndefault route restored!'
+	'''
