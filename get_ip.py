@@ -1,35 +1,30 @@
-import sqlite3
 import threading
+import urllib2
+import re
 import PingIt
+
 
 
 mlock = threading.RLock()
 
 class VgServer():
 	def __init__(self):
-		self.conn = self.conn_db()
 		self.threads = []
 		self.allList = []
-		self.ip_list = self.get_server()
-
-
-	def conn_db(self):
-		print '\nConnecting to db ...'
-		return sqlite3.connect('db.sqlite3')
-
-	
-	def get_server(self):
-		print '\nretrieving server ip list ...'
-		return self.conn.execute('select ip_addr from DB_vpnserver where region <> "China"')
 	
 
-	def get_port(self):
-		ip_selected = self.allList[0][1]
-		#ip_selected = '113.128.128.139'
-		print '\nget port for server:%s'%ip_selected
-		port = self.conn.execute('select port from DB_servstats where id=(select id from DB_vpnserver where ip_addr="%s")'%ip_selected)
-		for i in port:
-			return i[0]
+	def get_ip_from_html(self):
+		html = urllib2.urlopen('http://www.vpngate.net/en/')
+		origin_source = html.read()
+		
+		# write tmp.html file for port searching
+		with open('tmp.html', 'wb') as fw:
+			fw.write(origin_source)
+
+		p = re.compile('\d+\.\d+\.\d+\.\d+')
+		ip_list = p.findall(origin_source)
+
+		return ip_list
 
 
 	# get ping value
@@ -45,20 +40,27 @@ class VgServer():
 
 	# get all ping result into a list
 	def GetAll(self):
-		for ip in self.ip_list:
-			ip = ip[0]
+		ip_list = self.get_ip_from_html()
+		tmp_list = []
+		for ip in ip_list:
+			if ip in tmp_list:
+				continue
 			t = threading.Thread(target=self.GetLegacy, args=(ip, ), name='thread-'+ip)
 			t.start()
 			self.threads.append(t)
-	
+			tmp_list.append(ip)
 
-	# return best server ip, port
+
+	# return ip list sorted by ping value
 	def get_result(self):
 		self.GetAll()
+		for t in self.threads:
+			t.join()	
+		
 		self.allList = sorted(self.allList)
-		ip = self.allList[0][1]		
-		port = self.get_port()
-		return ip, port
+
+
+	def close_db():
 		self.conn.close()
 
 
@@ -66,10 +68,12 @@ class VgServer():
 
 if __name__ == "__main__":
 	s = VgServer()
-	ip, port = s.get_result()
-	#s.get_port()
-	#print s.get_port()[2]
-	print ip, port
+	s.get_result()
+	print s.allList
+	
+	with open('tmp.txt', 'wb') as fw:
+		for i in s.allList:
+			fw.write(str(i))
 	
 
 

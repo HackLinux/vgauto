@@ -30,14 +30,14 @@ declare root
 		bool HalfConnection false
 		bool HideNicInfoWindow false
 		bool HideStatusWindow false
-		string Hostname 211.48.116.156
+		string Hostname 220.71.78.107
 		string HubName VPNGATE
 		uint MaxConnection 1
 		bool NoRoutingTracking false
 		bool NoTls1 false
 		bool NoUdpAcceleration false
 		uint NumRetry 4294967295
-		uint Port 1910
+		uint Port 1408
 		uint PortUDP 0
 		string ProxyName $
 		byte ProxyPassword $
