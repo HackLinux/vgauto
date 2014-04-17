@@ -1,3 +1,0 @@
-auto configure vg setting current for ubuntu12.04
-usage: python ./conn_vg.py ip port
-example: python ./conn_vg.py 27.1.128.141 995
