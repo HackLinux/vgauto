@@ -1,3 +1,16 @@
 auto configure vg setting current for ubuntu12.04
+
+get_ip.py
+usage: python ./get_ip.py
+
+conn_vg.py
 usage: python ./conn_vg.py ip port
-example: python ./conn_vg.py 27.1.128.141 995
+
+
+examples:
+	1. use get_ip.py to get server ip and save it in tmp.txt file with [ping, ip] format, meanwhile get port number in tmp.html file with specified ip address(you may need to use a proxy 127.0.0.1:8087 to get it work):
+	python ./get_ip.py
+
+	2. apply setttings or restore default settings:
+	add settings:	python ./conn_vg.py 27.1.128.141 995 1
+	remove settings	python ./conn_vg.py 27.1.128.141 995 0
