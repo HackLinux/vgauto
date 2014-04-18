@@ -38,6 +38,7 @@ class VgServer():
             port = p_port.findall(i)[0]
             ip_list.append([ip, port])
         
+        print 'get [ip, port] list successed, totally %s servers'%len(ip_list)
         return ip_list
 
 
@@ -58,7 +59,7 @@ class VgServer():
     # get all ping result into a list
     def GetAll(self):
         ip_list = self.get_ip_from_html()
-        tmp_list = []
+        
         for ip_port in ip_list:
             t = threading.Thread(target=self.GetLegacy, args=(ip_port, ), name='thread-'+ip_port[0])
             t.start()
@@ -71,6 +72,7 @@ class VgServer():
         for t in self.threads:
             t.join()
         
+        print 'sort list by ping value ... '
         self.allList = sorted(self.allList)
         for i in self.allList:
             ip = self.allList[0][1]
@@ -80,7 +82,7 @@ class VgServer():
             else:
                 continue
         print '\nNo usable port found, please retry!'
-
+        return -1
 
     def close_db():
         self.conn.close()

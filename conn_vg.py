@@ -2,7 +2,7 @@
 import sys
 import subprocess
 import time
-from get_ip import get_result
+import get_ip
 
 
 
@@ -157,23 +157,53 @@ declare root
 
 
 if __name__ == "__main__":
-    op_flag = raw_input('Please select operation:\n\t1. open vpn connection\n\t
-2. close vpn connection\n\t3. exit\n'
-
-    ip = 0
-    port = 0
+    op_flag = raw_input('You have some choices:\n\t1. open vpn connection\n\t2. close vpn connection\n\t3. exit\nSo, which one do you like:')
+    
+    # init default param value
+    ip = '124.56.10.199'
+    port = '995'
+    
+    
     if op_flag == '1':
-        print '\Retrieving best server for you, please wait ...'
-        ip, port = get_result()
-	    print '\nBegin VPN configuration, please wait ...'
-	    print '\ncreating vpn instance ...'
-	    #a = MyVPN(sys.argv[1], sys.argv[2], sys.argv[3])
-	    a = MyVPN(sys.argv[1], ip, port, 1)
-	    a.vg_switch()
-	elif op_flag == '2':
-	    a = MyVPN(sys.argv[1], ip, port, 0)
-	elif op_flag == '3':
-	    exit(0)
-	else:
-	    print '\nInvalid input, please check!'
-	    exit(0)
+        print 'Retrieving best server for you, please wait ...'
+        
+        serv = get_ip.VgServer()
+        best_server = serv.get_result()
+        if best_server == -1:
+            print '\nserver not found, please retry!'
+            exit(0)
+        ip, port = best_server
+        
+        # save current server info
+        with open('tmp_ip.txt', 'wb') as fw:
+            fw.write('%s:%s'%(ip, port))
+
+        confirm_flag = raw_input('i think the best server for you is:%s:%s\n1. yes\n2. no\nPlease make your choice:'%(ip, port))
+        
+        if confirm_flag == '1':
+            print '\nBegin VPN configuration, please wait ...'
+            print '\ncreating vpn instance ...'
+            #a = MyVPN(sys.argv[1], sys.argv[2], sys.argv[3])
+            a = MyVPN(ip, port, 1)
+            a.vg_switch()
+        elif confirm_flag == '2':
+            print '\nexiting ...'
+            exit(0)
+        else:
+            print '\nInvalid input, please check!'
+            exit(0)
+            
+    elif op_flag == '2':
+        with open('tmp_ip.txt', 'rb') as fr:
+            recent_server = fr.readline().split(':')
+            print recent_server
+            ip, port = recent_server
+        a = MyVPN(ip, port, 0)
+        a.vg_switch()
+        
+    elif op_flag == '3':
+        exit(0)
+        
+    else:
+        print '\nInvalid input, please check!'
+        exit(0)
