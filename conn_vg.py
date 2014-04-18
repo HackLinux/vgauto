@@ -2,6 +2,8 @@
 import sys
 import subprocess
 import time
+from get_ip import get_result
+
 
 
 class MyVPN():
@@ -155,7 +157,23 @@ declare root
 
 
 if __name__ == "__main__":
-	print '\nBegin VPN configuration, please wait ...'
-	print '\ncreating vpn instance ...'
-	a = MyVPN(sys.argv[1], sys.argv[2], sys.argv[3])
-	a.vg_switch()
+    op_flag = raw_input('Please select operation:\n\t1. open vpn connection\n\t
+2. close vpn connection\n\t3. exit\n'
+
+    ip = 0
+    port = 0
+    if op_flag == '1':
+        print '\Retrieving best server for you, please wait ...'
+        ip, port = get_result()
+	    print '\nBegin VPN configuration, please wait ...'
+	    print '\ncreating vpn instance ...'
+	    #a = MyVPN(sys.argv[1], sys.argv[2], sys.argv[3])
+	    a = MyVPN(sys.argv[1], ip, port, 1)
+	    a.vg_switch()
+	elif op_flag == '2':
+	    a = MyVPN(sys.argv[1], ip, port, 0)
+	elif op_flag == '3':
+	    exit(0)
+	else:
+	    print '\nInvalid input, please check!'
+	    exit(0)
