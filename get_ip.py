@@ -14,15 +14,26 @@ class VgServer():
 	
 
 	def get_ip_from_html(self):
-		html = urllib2.urlopen('http://www.vpngate.net/en/')
-		origin_source = html.read()
-		
+		try:
+			response = urllib2.urlopen('http://www.vpngate.net/en/')
+		except Exception as err:
+			print '\nopen url failed:%s\ntrying using proxy 127.0.0.1:8087 ...'%err
+			proxy = urllib2.ProxyHandler({'http': '127.0.0.1:8087'})
+			opener = urllib2.build_opener(proxy)
+			urllib2.install_opener(opener)
+			try:
+				response = urllib2.urlopen('http://www.vpngate.net/en/')
+			except Exception as err:
+				print 'open url failed again!\nexiting ...'
+				exit(0)
+
 		# write tmp.html file for port searching
+		html = response.read()
 		with open('tmp.html', 'wb') as fw:
-			fw.write(origin_source)
+			fw.write(html)
 
 		p = re.compile('\d+\.\d+\.\d+\.\d+')
-		ip_list = p.findall(origin_source)
+		ip_list = p.findall(html)
 
 		return ip_list
 
