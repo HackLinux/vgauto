@@ -23,10 +23,13 @@ class VgServer():
         except Exception as err:
             print '\nopen url failed:%s\ntrying using proxy 127.0.0.1:8087 ...'%err
             proxy = urllib2.ProxyHandler({'http': '127.0.0.1:8087'})
-            opener = urllib2.build_opener(proxy)
-            urllib2.install_opener(opener)
+            opener = urllib2.OpenerDirector.add_handler(proxy)
+            
+            #opener = urllib2.build_opener(proxy)
+            #urllib2.install_opener(opener)
             try:
-                response = urllib2.urlopen('http://www.vpngate.net/en/')
+                response = urllib2.OpenerDirector.open('http://www.vpngate.net/en/')
+                #response = urllib2.urlopen('http://www.vpngate.net/en/')
             except Exception as err:
                 print 'open url failed again!\nexiting ...'
                 exit(0)
