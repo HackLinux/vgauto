@@ -169,16 +169,35 @@ if __name__ == "__main__":
         
         serv = get_ip.VgServer()
         best_server = serv.get_result()
-        if best_server == -1:
-            print '\nserver not found, please retry!'
-            exit(0)
-        ip, port = best_server
         
-        # save current server info
+        if len(best_server) < 5:
+            print '\nno suitable server found, please retry!'
+            exit(0)
+        
+        print 'Here is the best 5 servers for you:'
+        print '\n\tNo.\tping\tIP\t\tPort\tLineSpeed'
+        for i in range(len(best_server)):
+            print '\t%s.'%(i+1),
+            print '\t%s\t%s\t%s\t%s'%(best_server[i][0], best_server[i][1], \
+                    best_server[i][2],best_server[i][3])
+        
+        try:
+            choice_flag = int(raw_input('Which one do you like to connect with:'))
+        except:
+            print '\nPlease check your input!'
+            
+        if choice_flag in range(1, 6):
+            ip = best_server[choice_flag-1][1]
+            port = best_server[choice_flag-1][2]
+        else:
+            print '\nPlease enter from "1" to "5"!'
+        
+        
+        # save selected server info into a file, if we want to disconnect we read from it
         with open('tmp_ip.txt', 'wb') as fw:
             fw.write('%s:%s'%(ip, port))
 
-        confirm_flag = raw_input('i think the best server for you is:%s:%s\n1. yes\n2. no\nPlease make your choice:'%(ip, port))
+        confirm_flag = raw_input('You have choose:%s:%s, continue to connect?\n1. yes\n2. no\nPlease make your choice:'%(ip, port))
         
         if confirm_flag == '1':
             print '\nBegin VPN configuration, please wait ...'
