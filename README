@@ -2,7 +2,7 @@ Auto configure vpngate setting, for ubuntu12.04
 
     Vpngate has been popular since 2013, but it does not have a user friendly interface on Linux, so I make this script for my convience. Of course, if you find it useful, you may also use it.
     
-    This script is used in Ubuntu 12.04 LTS, I'm not sure if it works on other linux dists, and if I have some free time, may be I will. If you have interest, you may test it by your own. It will only modify you vpncmd account settings(add an account setting), as well as you route table settings, no further modifications.
+    This script is used on Ubuntu 12.04 LTS, I'm not sure if it works on other linux dists. May be I will try some testings in my free time. If you have interest, you may test it by your own. It will only modify you vpncmd account settings(add an account setting), as well as you route table settings, no further modifications.
     
 
 
@@ -22,6 +22,7 @@ info:
 
 
 TO DO:
-        ip route:
+        1. ip route (Seems no need to do this, because when virtual adapter get ip from server with dhcp, it will automatically modify the route table. Not confirmed though.):
             10.211.0.0/16 dev vpn_vg  proto kernel  scope link  src 10.211.1.54
-        currently is static in the script, make it dynamic with dhcp
+            (currently is static in the script, make it dynamic with dhcp)
+        2. auto detect whether vpncmd command "accountconnect ip" executes successfully or not, if not exit or retry.
