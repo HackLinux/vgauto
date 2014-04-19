@@ -1,11 +1,11 @@
 # coding=utf-8
-import sys
+#!/usr/bin/python2.7
 import subprocess
 import time
-import get_ip
 
 
 
+# vpncmd and route table settings
 class MyVPN():
 	def __init__(self, ip, port, enable):
 		self.ip = ip
@@ -14,6 +14,8 @@ class MyVPN():
 		self.conf_file_name = 'vgp.vpn'
 		self.conf_name = 'vgp1'
 		self.vpn_adapter = 'vpn_vg'
+		
+		# vpncmd import file template
 		self.conf_string = '''﻿# VPN Client VPN Connection Setting File
 # 
 # This file is exported using the VPN Client Manager.
@@ -70,7 +72,8 @@ declare root
 ''' % (ip, port)
 		self.create_tmp_conf_file()
 
-
+    
+    # create a tmp *.vpn file, import it from vpncmd to create account
 	def create_tmp_conf_file(self):
 		tmp_f = open(self.conf_file_name, 'w')
 		tmp_f.write(self.conf_string)
@@ -101,7 +104,8 @@ declare root
 		for i in a:
 			print i
 
-
+    
+    # show accountstatusget information
 	def status_get(self):
 		# create Popen instance
 		p = subprocess.Popen(['vpncmd'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
@@ -119,22 +123,34 @@ declare root
 			print i
 	
 	
+	# refresh vpncmd adapter ip, 
+	# if connected successfully it will get from the vpn server
 	def dhclient_refresh(self):
 		subprocess.call(['dhclient', '-r', self.vpn_adapter])
 		subprocess.call(['dhclient', self.vpn_adapter])
 		subprocess.call(['ifconfig'])
 
-
+    
+    # change route table settings
 	def change_route(self):
 		subprocess.call(['ip', 'route', 'add', self.ip, 'via', '192.168.0.1', 'dev', 'eth0'])
+		# here "10.211.0.0/16" and "10.211.1.54" are static, we can use ifconfig to
+		# make it work more properly. Normally after we have refreshed the dhcp
+		# we will get a new ip address and this will also add automatically in route
+		# table, seems we do not need to worry about this:)
+		# subprocess.call(['ip', 'route', 'add', '10.211.0.0/16', 'protocol', 'kernel', 'scope', 'link', 'src', '10.211.1.54', 'dev', self.vpn_adapter])
 		subprocess.call(['ip', 'route', 'change', 'default', 'via', '10.211.254.254', 'dev', self.vpn_adapter])
 
 	
+	# restore route table settings
 	def restore_default_route(self):
 		subprocess.call(['ip', 'route', 'del', self.ip])
+		# static "10.211.0.0/16". I'm not worry about this line:)
+		# subprocess.call(['ip', 'route', 'del', '10.211.0.0/16'])
 		subprocess.call(['ip', 'route', 'change', 'default', 'via', '192.168.0.1', 'dev', 'eth0'])
 
 
+    # switch connection states: connect or disconnect
 	def vg_switch(self):
 		if self.enable == 1:
 			print '\nreconfig account settings and connect ...'
@@ -154,75 +170,3 @@ declare root
 			print '\nUnknown error!!!'
 			exit(0)
 
-
-
-if __name__ == "__main__":
-    op_flag = raw_input('You have some choices:\n\t1. open vpn connection\n\t2. close vpn connection\n\t3. exit\nSo, which one do you like:')
-    
-    # init default param value
-    ip = '124.56.10.199'
-    port = '995'
-    
-    
-    if op_flag == '1':
-        print 'Retrieving best server for you, please wait ...'
-        
-        serv = get_ip.VgServer()
-        best_server = serv.get_result()
-        
-        if len(best_server) < 5:
-            print '\nno suitable server found, please retry!'
-            exit(0)
-        
-        print 'Here is the best 5 servers for you:'
-        print '\n\tNo.\tping\tIP\t\tPort\tLineSpeed'
-        for i in range(len(best_server)):
-            print '\t%s.'%(i+1),
-            print '\t%s\t%s\t%s\t%s'%(best_server[i][0], best_server[i][1], \
-                    best_server[i][2],best_server[i][3])
-        
-        try:
-            choice_flag = int(raw_input('Which one do you like to connect with:'))
-        except:
-            print '\nPlease check your input!'
-            
-        if choice_flag in range(1, 6):
-            ip = best_server[choice_flag-1][1]
-            port = best_server[choice_flag-1][2]
-        else:
-            print '\nPlease enter from "1" to "5"!'
-        
-        
-        # save selected server info into a file, if we want to disconnect we read from it
-        with open('tmp_ip.txt', 'wb') as fw:
-            fw.write('%s:%s'%(ip, port))
-
-        confirm_flag = raw_input('You have choose:%s:%s, continue to connect?\n1. yes\n2. no\nPlease make your choice:'%(ip, port))
-        
-        if confirm_flag == '1':
-            print '\nBegin VPN configuration, please wait ...'
-            print '\ncreating vpn instance ...'
-            #a = MyVPN(sys.argv[1], sys.argv[2], sys.argv[3])
-            a = MyVPN(ip, port, 1)
-            a.vg_switch()
-        elif confirm_flag == '2':
-            print '\nexiting ...'
-            exit(0)
-        else:
-            print '\nInvalid input, please check!'
-            exit(0)
-            
-    elif op_flag == '2':
-        with open('tmp_ip.txt', 'rb') as fr:
-            recent_server = fr.readline().split(':')
-            print recent_server
-            ip, port = recent_server
-        a = MyVPN(ip, port, 0)
-        a.vg_switch()
-        
-    elif op_flag == '3':
-        exit(0)
-        
-    else:
-        print '\nInvalid input, please check!'
-        exit(0)

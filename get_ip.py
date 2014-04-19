@@ -1,19 +1,22 @@
+#!/usr/bin/python2.7
 import threading
 import urllib2
 import re
 import PingIt
 
 
+
 # lock ip list for appending
 mlock = threading.RLock()
 
-
+# object contains server information
 class VgServer():
     def __init__(self):
         self.threads = []
         self.allList = []
     
     
+    # get the origin server list
     def get_ip_from_html(self):
         try:
             response = urllib2.urlopen('http://www.vpngate.net/en/')
@@ -91,17 +94,6 @@ class VgServer():
         print 'sort list by ping value ... '
         self.allList = sorted(self.allList)
         
-        # return best 5 in the list
-        return self.allList[0:5]
-
-
-
-
-if __name__ == "__main__":
-    s = VgServer()
-    print s.get_result()
-   
-
-    
-
+        # return best 10 in the list
+        return self.allList[0:10]
 
