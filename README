@@ -1,3 +1,6 @@
 auto configure vg setting current for ubuntu12.04
 
 usage:  [sudo ]python ./conn_vg.py
+
+
+info:   you need to run "vpnclient start" first.
