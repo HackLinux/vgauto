@@ -8,13 +8,14 @@ Auto configure vpngate setting, for ubuntu12.04
 
 
 
-usage:  [sudo ]python ./conn_vg.py
+usage:  [sudo ]python ./start_vpn.py
 
 
 info:   
-        1. you need to run "vpnclient start" first to start the client;
+        0. install vpngate client;
+        1. start your vpnclient service, usually run "vpnclient start" command in terminal;
         2. you must have access to route table;
-        3. if you haven't access to 'http://vpngate.net/en/', you can use a local proxy '127.0.0.1:8087', the proxy is writen statically in the script, you can change it as you wish:).
+        3. if you haven't access to 'http://vpngate.net/en/', you can use a local proxy '127.0.0.1:8087', the proxy is written statically in the script, you can change it as you wish:).
 
 
 TO DO:
