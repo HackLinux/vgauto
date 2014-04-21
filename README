@@ -15,10 +15,10 @@ info:
         0. install vpngate client;
         1. start your vpnclient service, usually run "vpnclient start" command in terminal;
         2. you must have access to route table;
-        3. if you haven't access to 'http://vpngate.net/en/', you can use a local proxy '127.0.0.1:8087', the proxy is written statically in the script, you can change it as you wish:);
-        4. default gateway is 192.168.0.1, if not you can change it in MyVPN.py;
-        5. default virtual adapter is "vpn_vg", if not you can change it in MyVPN.py;
-        5. default physical adapter is "eth0", if not you can change it in MyVPN.py;
+        3. if you haven't access to 'http://vpngate.net/en/', you can use a http proxy '127.0.0.1:8087';
+        4. default gateway is 192.168.0.1;
+        5. default virtual adapter is "vpn_vg";
+        6. default physical adapter is "eth0";
 
 
 TO DO:
