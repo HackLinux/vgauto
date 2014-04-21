@@ -1,5 +1,8 @@
 Auto configure vpngate setting, for ubuntu12.04
-
+    
+    github: https://github.com/fromMars/vgauto/
+    
+    
     Vpngate has been popular since 2013, but it does not have a user friendly interface on Linux, so I make this script for my convience. Of course, if you find it useful, you may also use it.
     
     This script is used on Ubuntu 12.04 LTS, I'm not sure if it works on other linux dists. May be I will try some testings in my free time. If you have interest, you may test it by your own. It will only modify you vpncmd account settings(add an account setting), as well as you route table settings, no further modifications.
