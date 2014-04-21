@@ -1,18 +1,22 @@
 # coding=utf-8
 
+
 # start_vpn.py
 # save current connected server
 connected_server = 'tmp_server.log'
 # save connected server history
 server_history = 'server_histroy.log'
 
+
 # get_ip.py
 # http/https proxy server url
 proxy_url = {'http': '127.0.0.1:8087'}
 
+
 # get_location.py
 # ip geography information database url
 location_post_url = 'http://opendata.baidu.com/api.php?query=%s&resource_id=6006&oe=utf-8'
+
 
 # MyVPN.py
 # temporary account config file, and account params
