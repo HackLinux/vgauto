@@ -3,6 +3,7 @@ import threading
 import urllib2
 import re
 import PingIt
+from configs import proxy_url
 
 
 
@@ -14,6 +15,7 @@ class VgServer():
     def __init__(self):
         self.threads = []
         self.allList = []
+        self.pu = proxy_url
     
     
     # get the origin server list
@@ -21,8 +23,8 @@ class VgServer():
         try:
             response = urllib2.urlopen('http://www.vpngate.net/en/')
         except Exception as err:
-            print '\nopen url failed:%s\ntrying using proxy 127.0.0.1:8087 ...'%err
-            proxy = urllib2.ProxyHandler({'http': '127.0.0.1:8087'})
+            print '\nopen url failed:%s\ntrying using proxy %s ...'%(err, self.pu)
+            proxy = urllib2.ProxyHandler(self.pu)
             opener = urllib2.build_opener(proxy)
             #urllib2.install_opener(opener)
             try:

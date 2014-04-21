@@ -2,6 +2,8 @@
 #!/usr/bin/python2.7
 import subprocess
 import time
+from configs import tmp_cfg_file, account_name, virtual_adapter, tmp_cfg_file_template, \
+my_gateway, my_adapter
 
 
 
@@ -11,65 +13,12 @@ class MyVPN():
 		self.ip = ip
 		self.port = port
 		self.enable = int(enable)
-		self.conf_file_name = 'vgp.vpn'
-		self.conf_name = 'vgp1'
-		self.vpn_adapter = 'vpn_vg'
+		self.conf_file_name = tmp_cfg_file
+		self.conf_name = account_name
+		self.vpn_adapter = virtual_adapter
 		
 		# vpncmd import file template
-		self.conf_string = '''﻿# VPN Client VPN Connection Setting File
-# 
-# This file is exported using the VPN Client Manager.
-# The contents of this file can be edited using a text editor.
-# 
-# When this file is imported to the Client Connection Manager
-#  it can be used immediately.
-
-declare root
-{
-	bool CheckServerCert false
-	uint64 CreateDateTime 0
-	uint64 LastConnectDateTime 0
-	bool StartupAccount false
-	uint64 UpdateDateTime 0
-
-	declare ClientAuth
-	{
-		uint AuthType 1
-		byte HashedPassword H8N7rT8BH44q0nFXC9NlFxetGzQ=
-		string Username vpn
-	}
-	declare ClientOption
-	{
-		string AccountName vgp1
-		uint AdditionalConnectionInterval 1
-		uint ConnectionDisconnectSpan 0
-		string DeviceName vg
-		bool DisableQoS false
-		bool HalfConnection false
-		bool HideNicInfoWindow false
-		bool HideStatusWindow false
-		string Hostname %s
-		string HubName VPNGATE
-		uint MaxConnection 1
-		bool NoRoutingTracking false
-		bool NoTls1 false
-		bool NoUdpAcceleration false
-		uint NumRetry 4294967295
-		uint Port %s
-		uint PortUDP 0
-		string ProxyName $
-		byte ProxyPassword $
-		uint ProxyPort 0
-		uint ProxyType 0
-		string ProxyUsername $
-		bool RequireBridgeRoutingMode false
-		bool RequireMonitorMode false
-		uint RetryInterval 15
-		bool UseCompress false
-		bool UseEncrypt true
-	}
-}
-''' % (ip, port)
+		self.conf_string = tmp_cfg_file_template % (ip, port)
 		self.create_tmp_conf_file()
 
     
@@ -133,7 +82,7 @@ declare root
     
     # change route table settings
 	def change_route(self):
-		subprocess.call(['ip', 'route', 'add', self.ip, 'via', '192.168.0.1', 'dev', 'eth0'])
+		subprocess.call(['ip', 'route', 'add', self.ip, 'via', my_gateway, 'dev', my_adapter])
 		# here "10.211.0.0/16" and "10.211.1.54" are static, we can use ifconfig to
 		# make it work more properly. Normally after we have refreshed the dhcp
 		# we will get a new ip address and this will also add automatically in route
@@ -147,7 +96,7 @@ declare root
 		subprocess.call(['ip', 'route', 'del', self.ip])
 		# static "10.211.0.0/16". I'm not worry about this line:)
 		# subprocess.call(['ip', 'route', 'del', '10.211.0.0/16'])
-		subprocess.call(['ip', 'route', 'change', 'default', 'via', '192.168.0.1', 'dev', 'eth0'])
+		subprocess.call(['ip', 'route', 'change', 'default', 'via', my_gateway, 'dev', my_adapter])
 
 
     # switch connection states: connect or disconnect

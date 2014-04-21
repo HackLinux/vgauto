@@ -3,7 +3,10 @@ import subprocess
 import time
 import get_ip
 import get_location
+import datetime
+import os.path
 from MyVPN import MyVPN
+from configs import connected_server, server_history
 
 
 
@@ -58,8 +61,15 @@ if op_flag == '1':
 
 
     # save selected server info into a file, if we want to disconnect we read from it
-    with open('tmp_ip.txt', 'wb') as fw:
+    with open(connected_server, 'wb') as fw:
         fw.write('%s:%s'%(ip, port))
+    # save to log file
+    current_time = datetime.datetime.now()
+    if os.path.isfile(server_history) ==  False:
+        with open(server_history, 'wb') as fa:
+            fa.write('%s\t%30s\n'%('time', 'server'))
+    with open(server_history, 'ab') as fa:
+        fa.write('%s\t%s:%s\n'%(current_time, ip, port))
 
     # prompt user to confirm the choice
     confirm_flag = raw_input('You have choose:%s:%s, continue to connect?       \
@@ -81,7 +91,7 @@ if op_flag == '1':
         
 # restore ip route setting to default
 elif op_flag == '2':
-    with open('tmp_ip.txt', 'rb') as fr:
+    with open(connected_server, 'rb') as fr:
         recent_server = fr.readline().split(':')
         ip, port = recent_server
     a = MyVPN(ip, port, 0)
