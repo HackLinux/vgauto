@@ -23,7 +23,8 @@ class VgServer():
         try:
             response = urllib2.urlopen('http://www.vpngate.net/en/')
         except Exception as err:
-            print '\nopen url failed:%s\ntrying using proxy %s ...'%(err, self.pu)
+            print '\nopen url failed:%s\ntrying using proxy %s ...'%(err, \
+                                                                     self.pu)
             proxy = urllib2.ProxyHandler(self.pu)
             opener = urllib2.build_opener(proxy)
             #urllib2.install_opener(opener)
@@ -82,7 +83,8 @@ class VgServer():
         ip_list = self.get_ip_from_html()
         
         for ip_port in ip_list:
-            t = threading.Thread(target=self.GetLegacy, args=(ip_port, ), name='thread-'+ip_port[0])
+            t = threading.Thread(target=self.GetLegacy, args=(ip_port, ), \
+                                 name='thread-'+ip_port[0])
             t.start()
             self.threads.append(t)
 
