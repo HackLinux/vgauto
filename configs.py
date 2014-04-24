@@ -20,9 +20,13 @@ location_post_url = 'http://opendata.baidu.com/api.php?query=%s&resource_id=6006
 
 # MyVPN.py
 # temporary account config file, and account params
+# DeviceName defined in vpncmd as virtual adapter name, 
+# will show in "ifconfig" command echo with prefix "vpn_" with a max length 15
+device_name = 'vg'
 tmp_cfg_file = 'vgp.vpn'
 account_name = 'vgp1'
-virtual_adapter = 'vpn_vg'
+virtual_adapter = 'vpn_' + device_name
+max_connections = '8'
 # network settings
 my_gateway = '192.168.0.1'
 my_adapter = 'eth0'
@@ -51,17 +55,17 @@ declare root
 	}
 	declare ClientOption
 	{
-		string AccountName vgp1
+		string AccountName %s
 		uint AdditionalConnectionInterval 1
 		uint ConnectionDisconnectSpan 0
-		string DeviceName vg
+		string DeviceName %s
 		bool DisableQoS false
 		bool HalfConnection false
 		bool HideNicInfoWindow false
 		bool HideStatusWindow false
 		string Hostname %s
 		string HubName VPNGATE
-		uint MaxConnection 5
+		uint MaxConnection %s
 		bool NoRoutingTracking false
 		bool NoTls1 false
 		bool NoUdpAcceleration false

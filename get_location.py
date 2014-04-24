@@ -20,5 +20,6 @@ def get_region(ip):
         else:
             print '\nPlease check your input!'
             exit(0)
+            
     return data[index]
     

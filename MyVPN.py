@@ -2,10 +2,14 @@
 #!/usr/bin/python2.7
 import subprocess
 import time
-from configs import tmp_cfg_file, account_name, virtual_adapter, tmp_cfg_file_template, \
-my_gateway, my_adapter
+from configs import tmp_cfg_file, account_name, virtual_adapter, \
+		tmp_cfg_file_template, my_gateway, my_adapter, device_name, \
+		account_name, max_connections
 
 
+# max length limited to 15
+if len(virtual_adapter) > 15:
+	virtual_adapter = virtual_adapter[:15]
 
 # vpncmd and route table settings
 class MyVPN():
@@ -18,7 +22,8 @@ class MyVPN():
 		self.vpn_adapter = virtual_adapter
 		
 		# vpncmd import file template
-		self.conf_string = tmp_cfg_file_template % (ip, port)
+		self.conf_string = tmp_cfg_file_template % (account_name, device_name,\
+												ip, max_connections, port)
 		self.create_tmp_conf_file()
 
     
@@ -32,7 +37,8 @@ class MyVPN():
 	# clear recent account settings, import a new one, and connect it
 	def connect_vpn(self):
 		# create Popen instance
-		p = subprocess.Popen(['vpncmd'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+		p = subprocess.Popen(['vpncmd'], stdin=subprocess.PIPE, \
+							stdout=subprocess.PIPE)
 
 		# input our commands
 		p.stdin.write('2\n')
@@ -57,7 +63,8 @@ class MyVPN():
     # show accountstatusget information
 	def status_get(self):
 		# create Popen instance
-		p = subprocess.Popen(['vpncmd'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+		p = subprocess.Popen(['vpncmd'], stdin=subprocess.PIPE, \
+							stdout=subprocess.PIPE)
 
 		# input our commands
 		p.stdin.write('2\n')
@@ -82,13 +89,18 @@ class MyVPN():
     
     # change route table settings
 	def change_route(self):
-		subprocess.call(['ip', 'route', 'add', self.ip, 'via', my_gateway, 'dev', my_adapter])
-		# here "10.211.0.0/16" and "10.211.1.54" are static, we can use ifconfig to
-		# make it work more properly. Normally after we have refreshed the dhcp
-		# we will get a new ip address and this will also add automatically in route
-		# table, seems we do not need to worry about this:)
-		# subprocess.call(['ip', 'route', 'add', '10.211.0.0/16', 'protocol', 'kernel', 'scope', 'link', 'src', '10.211.1.54', 'dev', self.vpn_adapter])
-		subprocess.call(['ip', 'route', 'change', 'default', 'via', '10.211.254.254', 'dev', self.vpn_adapter])
+		subprocess.call(['ip', 'route', 'add', self.ip, 'via', my_gateway, \
+						'dev', my_adapter])
+		# here "10.211.0.0/16" and "10.211.1.54" are static, we can use 
+		# ifconfig to make it work more properly. Normally after we have 
+		# refreshed the dhcp we will get a new ip address and this will also 
+		# add automatically in route table, seems we do not need to worry 
+		# about this:)
+		# subprocess.call(['ip', 'route', 'add', '10.211.0.0/16', 'protocol',\
+		# 		'kernel', 'scope', 'link', 'src', '10.211.1.54', 'dev', \
+		#		self.vpn_adapter])
+		subprocess.call(['ip', 'route', 'change', 'default', 'via', \
+						'10.211.254.254', 'dev', self.vpn_adapter])
 
 	
 	# restore route table settings
@@ -96,7 +108,8 @@ class MyVPN():
 		subprocess.call(['ip', 'route', 'del', self.ip])
 		# static "10.211.0.0/16". I'm not worry about this line:)
 		# subprocess.call(['ip', 'route', 'del', '10.211.0.0/16'])
-		subprocess.call(['ip', 'route', 'change', 'default', 'via', my_gateway, 'dev', my_adapter])
+		subprocess.call(['ip', 'route', 'change', 'default', 'via', \
+						my_gateway, 'dev', my_adapter])
 
 
     # switch connection states: connect or disconnect
