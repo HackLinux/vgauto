@@ -22,7 +22,7 @@ class MyVPN():
 		self.vpn_adapter = virtual_adapter
 		
 		# vpncmd import file template
-		self.conf_string = tmp_cfg_file_template % (account_name, device_name,\
+		self.conf_string = tmp_cfg_file_template % (account_name, device_name,
 												ip, max_connections, port)
 		self.create_tmp_conf_file()
 
@@ -37,7 +37,7 @@ class MyVPN():
 	# clear recent account settings, import a new one, and connect it
 	def connect_vpn(self):
 		# create Popen instance
-		p = subprocess.Popen(['vpncmd'], stdin=subprocess.PIPE, \
+		p = subprocess.Popen(['vpncmd'], stdin=subprocess.PIPE, 
 							stdout=subprocess.PIPE)
 
 		# input our commands
@@ -63,7 +63,7 @@ class MyVPN():
     # show accountstatusget information
 	def status_get(self):
 		# create Popen instance
-		p = subprocess.Popen(['vpncmd'], stdin=subprocess.PIPE, \
+		p = subprocess.Popen(['vpncmd'], stdin=subprocess.PIPE, 
 							stdout=subprocess.PIPE)
 
 		# input our commands
@@ -89,7 +89,7 @@ class MyVPN():
     
     # change route table settings
 	def change_route(self):
-		subprocess.call(['ip', 'route', 'add', self.ip, 'via', my_gateway, \
+		subprocess.call(['ip', 'route', 'add', self.ip, 'via', my_gateway, 
 						'dev', my_adapter])
 		# here "10.211.0.0/16" and "10.211.1.54" are static, we can use 
 		# ifconfig to make it work more properly. Normally after we have 
@@ -99,7 +99,7 @@ class MyVPN():
 		# subprocess.call(['ip', 'route', 'add', '10.211.0.0/16', 'protocol',\
 		# 		'kernel', 'scope', 'link', 'src', '10.211.1.54', 'dev', \
 		#		self.vpn_adapter])
-		subprocess.call(['ip', 'route', 'change', 'default', 'via', \
+		subprocess.call(['ip', 'route', 'change', 'default', 'via', 
 						'10.211.254.254', 'dev', self.vpn_adapter])
 
 	
@@ -108,8 +108,8 @@ class MyVPN():
 		subprocess.call(['ip', 'route', 'del', self.ip])
 		# static "10.211.0.0/16". I'm not worry about this line:)
 		# subprocess.call(['ip', 'route', 'del', '10.211.0.0/16'])
-		subprocess.call(['ip', 'route', 'change', 'default', 'via', \
-						my_gateway, 'dev', my_adapter])
+		subprocess.call(['ip', 'route', 'change', 'default', 'via', my_gateway,
+						'dev', my_adapter])
 
 
     # switch connection states: connect or disconnect

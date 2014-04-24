@@ -28,8 +28,8 @@ if op_flag == '1':
     serv = get_ip.VgServer()
     best_server = serv.get_result()
 
-    # count the list items, it should exactly be 10, if not, there must be something
-    # wrong with the function
+    # count the list items, it should exactly be 10, if not, 
+    # there must be something wrong with the function
     server_count = len(best_server)
     if server_count < 10:
         print '\nno suitable server found, please retry!'
@@ -41,13 +41,14 @@ if op_flag == '1':
     for i in range(len(best_server)):
         region = get_location.get_region(best_server[i][1])
         print '\t%s.'%(i+1),
-        print '\t%s\t%s\t%s\t%s\t\t%s'%(best_server[i][0], best_server[i][1], \
+        print '\t%s\t%s\t%s\t%s\t\t%s'%(best_server[i][0], best_server[i][1], 
                 best_server[i][2],best_server[i][3], region)
     
     
     choice_flag = -1
     
-    # exactly 10 servers for choosing, if input not in this range, prompt to retry
+    # exactly 10 servers for choosing, if input not in this range, 
+    # prompt to retry
     while choice_flag not in range(1, server_count):
     
         # selection input must be a number
@@ -60,7 +61,8 @@ if op_flag == '1':
     port = best_server[choice_flag-1][2]
 
 
-    # save selected server info into a file, if we want to disconnect we read from it
+    # save selected server info into a file, if we want to disconnect we will  
+    # read from it
     with open(connected_server, 'wb') as fw:
         fw.write('%s:%s'%(ip, port))
     # save to log file
