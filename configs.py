@@ -61,7 +61,7 @@ declare root
 		bool HideStatusWindow false
 		string Hostname %s
 		string HubName VPNGATE
-		uint MaxConnection 1
+		uint MaxConnection 5
 		bool NoRoutingTracking false
 		bool NoTls1 false
 		bool NoUdpAcceleration false
