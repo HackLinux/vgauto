@@ -26,7 +26,7 @@ device_name = 'vg'
 tmp_cfg_file = 'vgp.vpn'
 account_name = 'vgp1'
 virtual_adapter = 'vpn_' + device_name
-max_connections = '8'
+max_connections = '1'
 # network settings
 my_gateway = '192.168.0.1'
 my_adapter = 'eth0'
