@@ -49,7 +49,7 @@ if op_flag == '1':
     
     # exactly 10 servers for choosing, if input not in this range, 
     # prompt to retry
-    while choice_flag not in range(1, server_count):
+    while choice_flag not in range(1, server_count+1):
     
         # selection input must be a number
         try:
