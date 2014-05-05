@@ -10,9 +10,8 @@ Auto configure vpngate setting, for ubuntu12.04
 
 
 
-
-usage:  [sudo ]python ./start_vpn.py
-
+VPNGATE:
+usage:  [sudo ]python ./start_vpn.py        
 
 info:   
         0. install vpngate client;
@@ -22,6 +21,16 @@ info:
         4. default gateway is 192.168.0.1;
         5. default virtual adapter is "vpn_vg";
         6. default physical adapter is "eth0";
+
+
+OPENVPN:
+usage:  [sudo ]python ./start_openvpn.py
+
+info:
+        0. this method do not need to edit any settings of configs.py file except the proxy settings.
+        1. when you see "Initializing openvpn connection ...", the vpn should have connected after a while. You can then try to figure out if it were connected.
+        2. you could also use "openvpn tmp_openvpn_config.ovpn" to connect manually.
+        3. main menu option "2. close vpn" is not usable here, when you want to close the vpn connection, just hit "Ctrl+C" to break it in terminal.
 
 
 TO DO:

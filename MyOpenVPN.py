@@ -5,6 +5,7 @@ from configs import openvpn_config_file
 class MyOpenVPN():
     def __init__(self):
         print 'Initializing openvpn connection ...'
+        print 'Connected!'
         self.connect_openvpn()
     
     
@@ -20,4 +21,7 @@ class MyOpenVPN():
         # display commands response
         for i in a:
             print i
-
+        
+        # write openvpn logs
+        with open('openvpn.log', 'wb') as fw:
+            fw.write(a)
