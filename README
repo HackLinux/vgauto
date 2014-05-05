@@ -29,3 +29,4 @@ TO DO:
             10.211.0.0/16 dev vpn_vg  proto kernel  scope link  src 10.211.1.54
             (currently is static in the script, make it dynamic with dhcp)
         2. auto detect whether vpncmd command "accountconnect ip" executes successfully or not, if not exit or retry.
+        
