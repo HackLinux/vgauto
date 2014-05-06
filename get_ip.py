@@ -47,6 +47,9 @@ class VgServer():
             print 'tmp_csv.csv not found! trying get it from vpngate.net ..'
             url = 'http://www.vpngate.net/api/iphone/'
             csv_data = self.get_html_response(url)
+            if 'DOCTYPE html' in csv_data:
+                print 'Got error data, please retry!'
+                exit(0)
             with open('tmp_csv.csv', 'wb') as fw:
                 fw.write(csv_data)
             
