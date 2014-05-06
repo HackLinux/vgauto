@@ -87,6 +87,7 @@ if op_flag == '1':
         print '\nBegin VPN configuration, please wait ...'
         print '\ncreating vpn instance ...'
         a = MyOpenVPN()
+        
     elif confirm_flag == '2':
         print '\nexiting ...'
         exit(0)
@@ -95,7 +96,7 @@ if op_flag == '1':
         exit(0)
         
 
-elif op_flag == '3':
+elif op_flag == '2' or '3':
     exit(0)
 else:
     print '\nInvalid input, please check!'
