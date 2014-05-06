@@ -1,4 +1,4 @@
-Auto configure vpngate setting, for ubuntu12.04
+One line command to connect a vpngate server with either vpnclient or openvpn, for ubuntu12.04
     
     github: https://github.com/fromMars/vgauto/
     
@@ -35,7 +35,7 @@ usage:  [sudo ]python ./start_openvpn.py
 
 info:
         0. This method do not need to edit any settings of configs.py file except the proxy settings;
-        1. When you see "Initializing openvpn connection ...", the vpn should have connected after a while. You can then try to figure out if it were connected;
+        1. When you see "Initialization Sequence Completed", it means connected successfully;
         2. You could also use "openvpn tmp_openvpn_config.ovpn" to connect manually;
         3. Main menu option "2. close vpn" is not usable here, when you want to close the vpn connection, just hit "Ctrl+C" to break it in terminal;
         4. The first time running will create a "tmp_csv.csv" file include all servers fetched, next running will use server from this file instead of re-fetching from "vpngate.net". If you want to use a pretty new server list, just delete this file.
