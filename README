@@ -14,28 +14,31 @@ VPNGATE:
 usage:  [sudo ]python ./start_vpn.py        
 
 info:   
-        0. install vpngate client;
-        1. start your vpnclient service, usually run "vpnclient start" command in terminal;
-        2. you must have access to route table;
-        3. if you haven't access to 'http://vpngate.net/en/', you can use a http proxy '127.0.0.1:8087';
-        4. default gateway is 192.168.0.1;
-        5. default virtual adapter is "vpn_vg";
-        6. default physical adapter is "eth0";
+        0. Install vpngate client;
+        1. Start your vpnclient service, usually run "vpnclient start" command in terminal;
+        2. You must have access to route table;
+        3. If you haven't access to 'http://vpngate.net/en/', you can use a http proxy '127.0.0.1:8087';
+        4. Default gateway is 192.168.0.1;
+        5. Default virtual adapter is "vpn_vg";
+        6. Default physical adapter is "eth0";
+        
+to do:
+        1. ip route (Seems no need to do this, because when virtual adapter get ip from server with dhcp, it will automatically modify the route table. Not confirmed though.):
+            10.211.0.0/16 dev vpn_vg  proto kernel  scope link  src 10.211.1.54
+            (currently is static in the script, make it dynamic with dhcp)
+        2. auto detect whether vpncmd command "accountconnect ip" executes successfully or not, if not exit or retry.
+
 
 
 OPENVPN:
 usage:  [sudo ]python ./start_openvpn.py
 
 info:
-        0. this method do not need to edit any settings of configs.py file except the proxy settings.
-        1. when you see "Initializing openvpn connection ...", the vpn should have connected after a while. You can then try to figure out if it were connected.
-        2. you could also use "openvpn tmp_openvpn_config.ovpn" to connect manually.
-        3. main menu option "2. close vpn" is not usable here, when you want to close the vpn connection, just hit "Ctrl+C" to break it in terminal.
+        0. This method do not need to edit any settings of configs.py file except the proxy settings;
+        1. When you see "Initializing openvpn connection ...", the vpn should have connected after a while. You can then try to figure out if it were connected;
+        2. You could also use "openvpn tmp_openvpn_config.ovpn" to connect manually;
+        3. Main menu option "2. close vpn" is not usable here, when you want to close the vpn connection, just hit "Ctrl+C" to break it in terminal;
+        4. The first time running will create a "tmp_csv.csv" file include all servers fetched, next running will use server from this file instead of re-fetching from "vpngate.net". If you want to use a pretty new server list, just delete this file.
 
 
-TO DO:
-        1. ip route (Seems no need to do this, because when virtual adapter get ip from server with dhcp, it will automatically modify the route table. Not confirmed though.):
-            10.211.0.0/16 dev vpn_vg  proto kernel  scope link  src 10.211.1.54
-            (currently is static in the script, make it dynamic with dhcp)
-        2. auto detect whether vpncmd command "accountconnect ip" executes successfully or not, if not exit or retry.
         
