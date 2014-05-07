@@ -1,5 +1,6 @@
 #!/usr/bin/python2.7
 import csv
+import sys
 import re
 import threading
 import urllib2
@@ -11,6 +12,7 @@ from configs import proxy_url
 # lock ip list for appending
 mlock = threading.RLock()
 
+
 # object contains server information
 class VgServer():
     def __init__(self, csv_or_html):
@@ -18,6 +20,9 @@ class VgServer():
         self.allList = []
         self.pu = proxy_url
         self.csv_or_html = csv_or_html
+        # progress count
+        self.P_COUNT = 0
+        self.P_STEP = 0
         
     
     def get_html_response(self, url):
@@ -140,6 +145,15 @@ class VgServer():
             elif self.csv_or_html == 'vpngate':
                 self.allList.append([pingValue, ip, port, lspeed])
             mlock.release()
+            # update the bar
+            self.P_COUNT += self.P_STEP
+            sys.stdout.write(('\b'*4+'%3d'%self.P_COUNT+'%'))
+            sys.stdout.flush()
+        else:
+            # update the bar
+            self.P_COUNT += self.P_STEP
+            sys.stdout.write(('\b'*4+'%3d'%self.P_COUNT+'%'))
+            sys.stdout.flush()
 
 
     # get all ping result into a list
@@ -151,6 +165,8 @@ class VgServer():
         else:
             print 'VPN program type error!'
             exit(0)
+        
+        self.P_STEP = 100.0 / len(ip_list) 
             
         for ip_port in ip_list:
             t = threading.Thread(target=self.GetLegacy, args=(ip_port, ), 
@@ -163,10 +179,16 @@ class VgServer():
     # like this: [[10, '61.153.236.234', '0', '00 Mbps'], [...], ...]
     def get_result(self):
         self.GetAll()
+        # set toolbar
+        #toolbar_width = 40
+        #sys.stdout.write("[%s]" % (' ' * toolbar_width))
+        #sys.stdout.flush()
+        #sys.stdout.write("\b" * (toolbar_width+1)) 
+        count = 1
         for t in self.threads:
-            t.join()
+            t.join() 
         
-        print 'sort list by ping value ... '
+        print '\nsort list by ping value ... '
         self.allList = sorted(self.allList)
         
         # return best 10 in the list
@@ -176,3 +198,4 @@ class VgServer():
 if __name__ == "__main__":
     a = VgServer('openvpn')
     a.get_ip_from_csv()
+    a.get_result()
