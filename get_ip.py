@@ -21,7 +21,7 @@ class VgServer():
         self.pu = proxy_url
         self.csv_or_html = csv_or_html
         # progress count
-        self.P_COUNT = 0
+        self.P_COUNT = 1
         self.P_STEP = 0
         
     
@@ -145,12 +145,12 @@ class VgServer():
             elif self.csv_or_html == 'vpngate':
                 self.allList.append([pingValue, ip, port, lspeed])
             mlock.release()
-            # update the bar
+            # update the progress status
             self.P_COUNT += self.P_STEP
             sys.stdout.write(('\b'*4+'%3d'%self.P_COUNT+'%'))
             sys.stdout.flush()
         else:
-            # update the bar
+            # update the progress status
             self.P_COUNT += self.P_STEP
             sys.stdout.write(('\b'*4+'%3d'%self.P_COUNT+'%'))
             sys.stdout.flush()
