@@ -147,11 +147,15 @@ class VgServer():
             mlock.release()
             # update the progress status
             self.P_COUNT += self.P_STEP
+            if self.P_COUNT > 100:
+                self.P_COUNT = 100
             sys.stdout.write(('\b'*4+'%3d'%self.P_COUNT+'%'))
             sys.stdout.flush()
         else:
             # update the progress status
             self.P_COUNT += self.P_STEP
+            if self.P_COUNT > 100:
+                self.P_COUNT = 100
             sys.stdout.write(('\b'*4+'%3d'%self.P_COUNT+'%'))
             sys.stdout.flush()
 
