@@ -6,6 +6,7 @@ import get_ip
 import get_location
 import datetime
 import os.path
+import re
 from MyOpenVPN import MyOpenVPN
 from configs import connected_server, server_history, openvpn_config_file
 
@@ -38,14 +39,22 @@ if op_flag == '1':
     
     # show user the server list
     print 'Here is the best %s servers for you:'%server_count
-    print '\n\tNo.\tping\tIP\t\tping_google\tLineSpeed\tRegion'
+    print '\n%4s%8s%19s%15s%13s%20s%12s'%('No.', 'ping', 'IP', 
+                                         'ping_google', 'LineSpeed', 
+                                         'Region', 'ProtoType')
+    p_proto_type = re.compile('\r\nproto\ udp\r\n')
     for i in range(len(best_server)):
         region = get_location.get_region(best_server[i][1])
-        print '\t%s.'%(i+1),
-        print '\t%s\t%s\t\t%s\t%s\t\t%s'%(best_server[i][0], best_server[i][1], 
-                best_server[i][2],best_server[i][3], region)
+        openvpn_data_base64 = best_server[i][4]
+        openvpn_data = base64.decodestring(openvpn_data_base64)
+        proto_type = 'udp'
+        p_tmp = p_proto_type.findall(openvpn_data)
+        if p_tmp == []:
+            proto_type = 'tcp'
+        print '%4s.%8s%19s%15s%13s%20s%12s'%(i+1, best_server[i][0], best_server[i][1], 
+                best_server[i][2],best_server[i][3], region, proto_type)
     
-    
+
     choice_flag = -1
     
     # exactly 10 servers for choosing, if input not in this range, 
@@ -54,7 +63,7 @@ if op_flag == '1':
     
         # selection input must be a number
         try:
-            choice_flag = int(raw_input('Which one do you like to connect with:'))
+            choice_flag = int(raw_input('\nWhich one do you like to connect with:'))
         except:
             print '\nPlease check your input!'
     
@@ -64,6 +73,7 @@ if op_flag == '1':
     # write openvpn_data to a temp config file
     with open(openvpn_config_file, 'wb') as fw:
         fw.write(openvpn_data)
+    
 
 
     # save selected server info into a file, if we want to disconnect we will  
