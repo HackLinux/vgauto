@@ -44,7 +44,8 @@ if op_flag == '1':
                                          'Region', 'Type')
     p_proto_type = re.compile('\r\nproto\ udp\r\n')
     for i in range(len(best_server)):
-        region = get_location.get_region(best_server[i][1]).replace(' ', '')
+        region = get_location.get_region(best_server[i][1])
+        region = region.replace(' ', '')
         openvpn_data_base64 = best_server[i][4]
         openvpn_data = base64.decodestring(openvpn_data_base64)
         proto_type = 'udp'
