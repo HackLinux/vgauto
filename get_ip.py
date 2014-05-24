@@ -76,11 +76,13 @@ class VgServer():
             ip = row['IP']
             num_sessions = row['NumVpnSessions']
             lspeed = row['Speed']
+            region = row['CountryLong']
             if lspeed is not None:
                 lspeed = int(lspeed)/1024/1024
             pint_to_google = row['Ping']
             openvpn_data = row['OpenVPN_ConfigData_Base64\r']
-            ip_list.append([ip, num_sessions, str(lspeed)+"Mbps", pint_to_google, openvpn_data])
+            ip_list.append([ip, num_sessions, str(lspeed)+"Mbps", 
+                            pint_to_google, openvpn_data, region])
         
         print 'get openvpn server list succeed, totally %s servers'%len(ip_list)
         # remove the last None item
@@ -126,6 +128,7 @@ class VgServer():
             lspeed = ip_port[2]
             ping_google = ip_port[3]
             openvpn_data = ip_port[4]
+            region = ip_port[5]
         elif self.csv_or_html == 'vpngate':
             ip = ip_port[0]
             port = ip_port[1]
@@ -141,7 +144,8 @@ class VgServer():
         if pingValue != -1:
             mlock.acquire()
             if self.csv_or_html == 'openvpn':
-                self.allList.append([pingValue, ip, ping_google, lspeed, openvpn_data])
+                self.allList.append([pingValue, ip, ping_google, lspeed, 
+                                     openvpn_data, region])
             elif self.csv_or_html == 'vpngate':
                 self.allList.append([pingValue, ip, port, lspeed])
             mlock.release()
