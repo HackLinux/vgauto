@@ -39,7 +39,7 @@ if op_flag == '1':
     
     # show user the server list
     print 'Here is the best %s servers for you:'%server_count
-    print '\n%4s%6s%10s%20s%7s%18s%6s'%('No.', 'ping', 'IP', 
+    print '\n%4s%6s%10s%20s%7s%18s%7s'%('No.', 'ping', 'IP', 
                                          'PingGoogle', 'Speed', 
                                          'Region', 'Type')
     p_proto_type = re.compile('\r\nproto\ udp\r\n')
