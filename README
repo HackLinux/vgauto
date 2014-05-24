@@ -41,4 +41,4 @@ info:
         4. The first time running will create a "tmp_csv.csv" file include all servers fetched, next running will use server from this file instead of re-fetching from "vpngate.net". If you want to use a pretty new server list, just delete this file.
 
 
-        
+NOTE: If "sudo command" does not work, try "su - root" switch to root user and execute the command. 
