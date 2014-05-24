@@ -39,7 +39,7 @@ if op_flag == '1':
     
     # show user the server list
     print 'Here is the best %s servers for you:'%server_count
-    print '\n%4s%6s%17s%15s%11s%18s%10s'%('No.', 'ping', 'IP', 
+    print '\n%4s%6s%10s%20s%7s%18s%6s'%('No.', 'ping', 'IP', 
                                          'PingGoogle', 'Speed', 
                                          'Region', 'Type')
     p_proto_type = re.compile('\r\nproto\ udp\r\n')
@@ -51,8 +51,8 @@ if op_flag == '1':
         p_tmp = p_proto_type.findall(openvpn_data)
         if p_tmp == []:
             proto_type = 'tcp'
-        print '%4s.%6s%19s%17s%11s%18s%10s'%(i+1, best_server[i][0], best_server[i][1], 
-                best_server[i][2],best_server[i][3], region, proto_type)
+        print '%2s.%6s%19s%9s%11s%18s%8s'%(i+1, best_server[i][0], best_server[i][1], 
+                best_server[i][2], best_server[i][3], region, proto_type)
     
 
     choice_flag = -1
