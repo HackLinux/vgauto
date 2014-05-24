@@ -39,19 +39,19 @@ if op_flag == '1':
     
     # show user the server list
     print 'Here is the best %s servers for you:'%server_count
-    print '\n%4s%8s%19s%15s%13s%20s%12s'%('No.', 'ping', 'IP', 
+    print '\n%4s%6s%17s%15s%11s%18s%10s'%('No.', 'ping', 'IP', 
                                          'ping_google', 'LineSpeed', 
                                          'Region', 'ProtoType')
     p_proto_type = re.compile('\r\nproto\ udp\r\n')
     for i in range(len(best_server)):
-        region = get_location.get_region(best_server[i][1])
+        region = get_location.get_region(best_server[i][1]).replace(' ', '')
         openvpn_data_base64 = best_server[i][4]
         openvpn_data = base64.decodestring(openvpn_data_base64)
         proto_type = 'udp'
         p_tmp = p_proto_type.findall(openvpn_data)
         if p_tmp == []:
             proto_type = 'tcp'
-        print '%4s.%8s%19s%15s%13s%20s%12s'%(i+1, best_server[i][0], best_server[i][1], 
+        print '%4s.%6s%19s%17s%11s%18s%10s'%(i+1, best_server[i][0], best_server[i][1], 
                 best_server[i][2],best_server[i][3], region, proto_type)
     
 
@@ -66,6 +66,7 @@ if op_flag == '1':
             choice_flag = int(raw_input('\nWhich one do you like to connect with:'))
         except:
             print '\nPlease check your input!'
+            exit()
     
     ip = best_server[choice_flag-1][1]
     openvpn_data_base64 = best_server[choice_flag-1][4]
