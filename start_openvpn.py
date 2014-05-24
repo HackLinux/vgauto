@@ -40,8 +40,8 @@ if op_flag == '1':
     # show user the server list
     print 'Here is the best %s servers for you:'%server_count
     print '\n%4s%6s%17s%15s%11s%18s%10s'%('No.', 'ping', 'IP', 
-                                         'ping_google', 'LineSpeed', 
-                                         'Region', 'ProtoType')
+                                         'PingGoogle', 'Speed', 
+                                         'Region', 'Type')
     p_proto_type = re.compile('\r\nproto\ udp\r\n')
     for i in range(len(best_server)):
         region = get_location.get_region(best_server[i][1]).replace(' ', '')
